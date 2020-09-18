@@ -96,23 +96,21 @@ def shortest_path(source, target):
     """
     queue = QueueFrontier()
     queue.add(Node(state=source, parent=None, action=None))
-    visited = list()
+    visited = list(source)
     while not (queue.empty()):
         parent = queue.remove()
-        print(parent)
         for action, state in neighbors_for_person(parent.state):
             if state == target:
-                end = Node(state=source, parent=parent, action=action)
+                end = Node(state=target, parent=parent, action=action)
                 return generate_path(end)
             if not(state in visited):
-                queue.add(Node(state=source, parent=parent, action=action))
+                queue.add(Node(state=state, parent=parent, action=action))
                 visited.append(state)
-
     return None
 
 def generate_path(node):
     ans = list()
-    while node:
+    while node.parent:
         ans.append((node.action, node.state))
         node = node.parent
     return ans
