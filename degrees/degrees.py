@@ -1,5 +1,6 @@
 import csv
 import sys
+import pdb
 
 from util import Node, StackFrontier, QueueFrontier
 
@@ -62,13 +63,15 @@ def main():
     load_data(directory)
     print("Data loaded.")
 
-    source = person_id_for_name(input("Name: "))
+    # source = person_id_for_name(input("Name: "))
+    source = person_id_for_name("Emma Watson")
     if source is None:
         sys.exit("Person not found.")
-    target = person_id_for_name(input("Name: "))
+    # target = person_id_for_name(input("Name: "))
+    target = person_id_for_name("Jennifer Lawrence")
     if target is None:
         sys.exit("Person not found.")
-
+    # pdb.set_trace()
     path = shortest_path(source, target)
 
     if path is None:
@@ -91,9 +94,28 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
+    queue = QueueFrontier()
+    queue.add(Node(state=source, parent=None, action=None))
+    visited = list()
+    while not (queue.empty()):
+        parent = queue.remove()
+        print(parent)
+        for action, state in neighbors_for_person(parent.state):
+            if state == target:
+                end = Node(state=source, parent=parent, action=action)
+                return generate_path(end)
+            if not(state in visited):
+                queue.add(Node(state=source, parent=parent, action=action))
+                visited.append(state)
 
-    # TODO
-    raise NotImplementedError
+    return None
+
+def generate_path(node):
+    ans = list()
+    while node:
+        ans.append((node.action, node.state))
+        node = node.parent
+    return ans
 
 
 def person_id_for_name(name):
