@@ -124,13 +124,27 @@ def minimax(board):
     """
     if terminal(board):
         return None
-    val = -99
-    the_action = None
-    for action in actions(board):
-        temp = min_value(result(board, action))
-        if val < temp:
-            the_action = action
-            val = temp
+    if
+    if player(board) == X:
+        val = -99
+        the_action = None
+        for action in actions(board):
+            temp = min_value(result(board, action))
+            if temp == 1:
+                return action
+            elif val < temp:
+                the_action = action
+                val = temp
+    else:
+        val = 99
+        the_action = None
+        for action in actions(board):
+            temp = max_value(result(board, action))
+            if temp == -1:
+                return action
+            elif val > temp:
+                the_action = action
+                val = temp
 
     return the_action
 
